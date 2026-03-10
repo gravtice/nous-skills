@@ -1,10 +1,7 @@
 ---
 name: nous-genai
 description: >
-  Use nous-genai as an end user (not a contributor): run `genai` CLI for text/image/audio/video/embedding
-  across providers (OpenAI/Gemini/Claude/DashScope/Doubao/Tuzi), save binary outputs, list available models, and start a
-  local MCP server (Streamable HTTP/SSE) with auth. Use when setting up provider keys via runtime env vars or `.env.*` files, choosing
-  `{provider}:{model_id}`, or debugging common issues (auth/timeout/SSRF-download/MCP bearer-token rules).
+  Use when you need to run nous-genai as a consumer (not a contributor): configure provider keys via env vars or `.env.*`, choose `{provider}:{model_id}`, generate text/image/audio/video/embedding via CLI, and run/debug authenticated local MCP workflows.
 ---
 
 # nous-genai
