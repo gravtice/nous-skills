@@ -1,7 +1,7 @@
 ---
 name: nous-genai
 description: >
-  Use when you need to run nous-genai as a consumer (not a contributor): configure provider keys via env vars or `.env.*`, choose `{provider}:{model_id}`, generate text/image/audio/video/embedding via CLI, and run/debug authenticated local MCP workflows.
+  Unified interface for all providers and all modalities: use one nous-genai CLI/SDK flow to run text/image/audio/video/embedding across OpenAI, Gemini, Claude, DashScope, Volcengine, and Tuzi, with support for authenticated local MCP workflows.
 ---
 
 # nous-genai
