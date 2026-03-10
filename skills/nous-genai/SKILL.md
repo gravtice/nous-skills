@@ -12,9 +12,9 @@ description: >
 
 ```bash
 # 1) Create `.env.local` in this skill directory
-(cd "<SKILL_BASE_DIR>" && { test -f .env.local || cp .env.example .env.local; })
+(cd "<SKILL_BASE_DIR>" && { test -f .env.local || touch .env.local; })
 
-# 2) Edit `<SKILL_BASE_DIR>/.env.local` and set at least one provider key.
+# 2) Edit `<SKILL_BASE_DIR>/.env.local` and set at least one provider key (see "Supported Environment Variables").
 # Example (OpenAI):
 #   NOUS_GENAI_OPENAI_API_KEY=...
 
@@ -43,7 +43,7 @@ You can set env vars in two ways:
 
 Recommended for this skill:
 
-- Put stable/project-level config in `<SKILL_BASE_DIR>/.env.local` (copy from `<SKILL_BASE_DIR>/.env.example`)
+- Put stable/project-level config in `<SKILL_BASE_DIR>/.env.local`
 - Use runtime env vars for one-off overrides
 
 Runtime example (inline):
@@ -68,17 +68,48 @@ NOUS_GENAI_TIMEOUT_MS=120000
 Notes:
 
 - Do not commit `.env.local` (add it to `.gitignore` if needed).
-- For the full list of supported env vars, see `<SKILL_BASE_DIR>/.env.example` (same directory as this `SKILL.md`).
 - Provider keys also accept non-prefixed vars like `OPENAI_API_KEY`, but prefer `NOUS_GENAI_*` for clarity.
 
-Common keys:
+## Supported Environment Variables
 
-- OpenAI: `NOUS_GENAI_OPENAI_API_KEY` (or `OPENAI_API_KEY`)
-- Google (Gemini): `NOUS_GENAI_GOOGLE_API_KEY` (or `GOOGLE_API_KEY`)
-- Anthropic (Claude): `NOUS_GENAI_ANTHROPIC_API_KEY` (or `ANTHROPIC_API_KEY`)
-- Aliyun (DashScope/百炼): `NOUS_GENAI_ALIYUN_API_KEY` (or `ALIYUN_API_KEY`)
-- Volcengine (Ark/豆包): `NOUS_GENAI_VOLCENGINE_API_KEY` (or `VOLCENGINE_API_KEY`)
-- Tuzi: `NOUS_GENAI_TUZI_*_API_KEY`
+### Common runtime
+
+- `NOUS_GENAI_TIMEOUT_MS` (default: `120000`)
+- `NOUS_GENAI_URL_DOWNLOAD_MAX_BYTES` (default: `134217728`)
+- `NOUS_GENAI_ALLOW_PRIVATE_URLS` (`1/true/yes` to allow private/loopback URL download)
+- `NOUS_GENAI_TRANSPORT` (internal transport marker; MCP server uses `mcp`, legacy `sse` is accepted)
+
+### Provider credentials
+
+- OpenAI: `NOUS_GENAI_OPENAI_API_KEY` or `OPENAI_API_KEY`
+- Google (Gemini): `NOUS_GENAI_GOOGLE_API_KEY` or `GOOGLE_API_KEY`
+- Anthropic (Claude): `NOUS_GENAI_ANTHROPIC_API_KEY` or `ANTHROPIC_API_KEY`
+- Aliyun (DashScope/百炼): `NOUS_GENAI_ALIYUN_API_KEY` or `ALIYUN_API_KEY`
+- Volcengine (Ark/豆包): `NOUS_GENAI_VOLCENGINE_API_KEY` or `VOLCENGINE_API_KEY`
+
+### Provider base URL overrides
+
+- `ALIYUN_OAI_BASE_URL` (default: `https://dashscope.aliyuncs.com/compatible-mode/v1`)
+- `VOLCENGINE_OAI_BASE_URL` (default: `https://ark.cn-beijing.volces.com/api/v3`)
+- `TUZI_BASE_URL` (default: `https://api.tu-zi.com`)
+- `TUZI_OAI_BASE_URL` (optional override)
+- `TUZI_GOOGLE_BASE_URL` (optional override)
+- `TUZI_ANTHROPIC_BASE_URL` (optional override)
+
+### Tuzi credentials
+
+- `NOUS_GENAI_TUZI_WEB_API_KEY` or `TUZI_WEB_API_KEY`
+- `NOUS_GENAI_TUZI_OPENAI_API_KEY` or `TUZI_OPENAI_API_KEY`
+- `NOUS_GENAI_TUZI_GOOGLE_API_KEY` or `TUZI_GOOGLE_API_KEY`
+- `NOUS_GENAI_TUZI_ANTHROPIC_API_KEY` or `TUZI_ANTHROPIC_API_KEY`
+
+### MCP server
+
+- `NOUS_GENAI_MCP_HOST` (default: `127.0.0.1`)
+- `NOUS_GENAI_MCP_PORT` (default: `6001`)
+- `NOUS_GENAI_MCP_PUBLIC_BASE_URL`
+- `NOUS_GENAI_MCP_BEARER_TOKEN`
+- `NOUS_GENAI_MCP_TOKEN_RULES`
 
 ## Model Format
 
@@ -176,7 +207,7 @@ Debug with MCP CLI:
 ## Troubleshooting
 
 ### Missing/invalid API key (401/403)
-Set provider credentials via runtime env vars or in `<SKILL_BASE_DIR>/.env.local` (copy from `<SKILL_BASE_DIR>/.env.example`), then retry.
+Set provider credentials via runtime env vars or in `<SKILL_BASE_DIR>/.env.local` (see "Supported Environment Variables"), then retry.
 
 ### File input errors (mime type)
 If you see `cannot detect ... mime type`, verify the path exists and is a valid image/audio/video file.

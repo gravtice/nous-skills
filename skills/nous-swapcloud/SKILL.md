@@ -10,10 +10,10 @@ description: Upload a local file to SwapCloud (Tencent COS) and return a tempora
 **IMPORTANT:** If you rely on `.env.*` files, run commands from this skill's base directory so config can be loaded. If you pass runtime env vars (inline/export), working directory is not restricted.
 
 ```bash
-# 0) Bootstrap local config from template (first time only)
-(cd "<SKILL_BASE_DIR>" && { test -f .env.local || cp .env.example .env.local; })
+# 0) Create local config file (first time only)
+(cd "<SKILL_BASE_DIR>" && { test -f .env.local || touch .env.local; })
 
-# 1) Edit .env.local and fill in required values:
+# 1) Edit `.env.local` and fill in required values (see "Supported Environment Variables"):
 #    BACKEND, TENCENT_COS_REGION, TENCENT_COS_BUCKET, TENCENT_COS_SECRET_ID, TENCENT_COS_SECRET_KEY
 
 # 2) Basic upload (URL expires in 1 hour)
@@ -37,6 +37,25 @@ npx -y --registry=https://registry.npmjs.org/ @gravtice/nous-swapcloud upload --
 Replace `<SKILL_BASE_DIR>` with the actual "Base directory for this skill" path shown when this skill is loaded.
 
 **Output handling:** Return only the signed URL. If output contains extra lines (for example package-manager warnings), extract the first `http(s)` URL and validate it before returning.
+
+## Supported Environment Variables
+
+### Required
+
+- `BACKEND` (must be `TENCENT_COS`)
+- `TENCENT_COS_REGION` (for example `ap-guangzhou`)
+- `TENCENT_COS_BUCKET` (bucket name)
+- `TENCENT_COS_SECRET_ID` (COS credential secret id)
+- `TENCENT_COS_SECRET_KEY` (COS credential secret key)
+
+### Optional
+
+- `TENCENT_COS_PREFIX` (object key prefix inside bucket, no leading slash)
+
+### Env file priority
+
+- `.env.local > .env.production > .env.development > .env.test`
+- Runtime env vars override values in `.env.*` files
 
 ## Workflow
 
@@ -80,11 +99,8 @@ When upload fails, check the error message and provide appropriate guidance:
 
 ### `Unsupported BACKEND=""` or missing environment variables
 Environment variables not configured. Tell the user:
-> SwapCloud 云存储未配置。请在 skill 目录 (`<SKILL_BASE_DIR>`) 下执行：
-> ```
-> cp .env.example .env.local
-> ```
-> 然后编辑 `.env.local`，至少填写以下项：`BACKEND`、`TENCENT_COS_REGION`、`TENCENT_COS_BUCKET`、`TENCENT_COS_SECRET_ID`、`TENCENT_COS_SECRET_KEY`。
+> SwapCloud 云存储未配置。请在 skill 目录 (`<SKILL_BASE_DIR>`) 下创建或编辑 `.env.local`，
+> 至少填写以下项：`BACKEND`、`TENCENT_COS_REGION`、`TENCENT_COS_BUCKET`、`TENCENT_COS_SECRET_ID`、`TENCENT_COS_SECRET_KEY`。
 
 ### `command not found` / install failure
 Retry with official registry:
