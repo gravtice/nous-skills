@@ -10,4 +10,4 @@ Skills collection for Nous-related agent workflows.
 
 ## License
 
-This repository is licensed under MIT-0. See [LICENSE](./LICENSE).
+This repository is licensed under MIT. See [LICENSE](./LICENSE).
