@@ -1,9 +1,19 @@
 ---
-name: nous-swapcloud
-description: Upload a local file to SwapCloud (Tencent COS) and return a temporary signed download URL. Use when users need a shareable temporary link (临时下载链接), want to upload large content before passing URL to external APIs, or need help with COS permissions.
+name: agent-swapcloud
+description: >
+  Upload a local file to SwapCloud (Tencent COS) and return a temporary signed
+  download URL. This repository names the skill `agent-swapcloud`; the
+  published upload package is `@gravtice/agent-swapcloud`.
 ---
 
-# SwapCloud Upload (CLI)
+# agent-swapcloud
+
+This skill is named `agent-swapcloud` in this repository.
+
+The published package is `@gravtice/agent-swapcloud`, and the command examples
+below use that exact package name.
+
+## SwapCloud Upload (CLI)
 
 ## Quick Start
 
@@ -17,10 +27,10 @@ description: Upload a local file to SwapCloud (Tencent COS) and return a tempora
 #    BACKEND, TENCENT_COS_REGION, TENCENT_COS_BUCKET, TENCENT_COS_SECRET_ID, TENCENT_COS_SECRET_KEY
 
 # 2) Basic upload (URL expires in 1 hour)
-(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/nous-swapcloud upload --file "/path/to/file" --expires 3600)
+(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/agent-swapcloud upload --file "/path/to/file" --expires 3600)
 
 # 3) With object auto-deletion after 7 days
-(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/nous-swapcloud upload --file "/path/to/file" --expires 3600 --object-ttl-days 7)
+(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/agent-swapcloud upload --file "/path/to/file" --expires 3600 --object-ttl-days 7)
 ```
 
 Runtime env vars example (no `.env.local` required):
@@ -31,7 +41,7 @@ TENCENT_COS_REGION=ap-guangzhou \
 TENCENT_COS_BUCKET=your-bucket-name \
 TENCENT_COS_SECRET_ID=your-secret-id \
 TENCENT_COS_SECRET_KEY=your-secret-key \
-npx -y --registry=https://registry.npmjs.org/ @gravtice/nous-swapcloud upload --file "/path/to/file" --expires 3600
+npx -y --registry=https://registry.npmjs.org/ @gravtice/agent-swapcloud upload --file "/path/to/file" --expires 3600
 ```
 
 Replace `<SKILL_BASE_DIR>` with the actual "Base directory for this skill" path shown when this skill is loaded.
@@ -64,7 +74,7 @@ Replace `<SKILL_BASE_DIR>` with the actual "Base directory for this skill" path 
 
 2) Upload and capture command output.
    - If using `.env.*` config, run from skill base directory.
-   - `raw=$(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/nous-swapcloud upload --file "<filePath>" --expires <seconds> 2>&1)`
+   - `raw=$(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/agent-swapcloud upload --file "<filePath>" --expires <seconds> 2>&1)`
    - With object TTL (days): add `--object-ttl-days <days>`
 
 3) Extract and validate URL:
@@ -105,7 +115,7 @@ Environment variables not configured. Tell the user:
 ### `command not found` / install failure
 Retry with official registry:
 ```bash
-(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/nous-swapcloud upload --file "<filePath>" --expires <seconds>)
+(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/agent-swapcloud upload --file "<filePath>" --expires <seconds>)
 ```
 
 ### `AccessDenied` when opening the URL
@@ -118,7 +128,7 @@ Retry the upload. If persistent, check network connectivity to Tencent COS.
 
 ### Upload an image and get a shareable link
 ```bash
-(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/nous-swapcloud upload --file "/tmp/screenshot.png" --expires 7200)
+(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/agent-swapcloud upload --file "/tmp/screenshot.png" --expires 7200)
 # Output: https://bucket.cos.region.myqcloud.com/path/to/file?sign=...
 ```
 
@@ -128,5 +138,5 @@ Retry the upload. If persistent, check network connectivity to Tencent COS.
 echo '{"data": [...]}' > /tmp/payload.json
 
 # Upload and get URL (expires in 5 minutes)
-(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/nous-swapcloud upload --file "/tmp/payload.json" --expires 300)
+(cd "<SKILL_BASE_DIR>" && npx -y --registry=https://registry.npmjs.org/ @gravtice/agent-swapcloud upload --file "/tmp/payload.json" --expires 300)
 ```
