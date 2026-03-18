@@ -23,7 +23,7 @@ below use that exact package name.
 # 0) Create local config file (first time only)
 (cd "<SKILL_BASE_DIR>" && { test -f .env.local || touch .env.local; })
 
-# 1) Edit `.env.local` and fill in required values (see "Supported Environment Variables"):
+# 1) Edit `.env.local` and fill in required values (see "Configuration Template" and "Supported Environment Variables"):
 #    BACKEND, TENCENT_COS_REGION, TENCENT_COS_BUCKET, TENCENT_COS_SECRET_ID, TENCENT_COS_SECRET_KEY
 
 # 2) Basic upload (URL expires in 1 hour)
@@ -66,6 +66,32 @@ Replace `<SKILL_BASE_DIR>` with the actual "Base directory for this skill" path 
 
 - `.env.local > .env.production > .env.development > .env.test`
 - Runtime env vars override values in `.env.*` files
+
+## Configuration Template
+
+Recommended `<SKILL_BASE_DIR>/.env.local`:
+
+```bash
+# Config file priority: .env.local > .env.production > .env.development > .env.test
+
+# Storage backend
+BACKEND=TENCENT_COS
+
+# Tencent COS
+TENCENT_COS_REGION=ap-guangzhou
+TENCENT_COS_BUCKET=swap-1250000000
+TENCENT_COS_SECRET_ID=your-secret-id
+TENCENT_COS_SECRET_KEY=your-secret-key
+
+# Optional: object key prefix inside bucket (no leading slash)
+# TENCENT_COS_PREFIX=swapcloud
+```
+
+Recommended usage:
+
+- Keep credentials in `<SKILL_BASE_DIR>/.env.local`
+- Use `TENCENT_COS_PREFIX` only when you want uploaded objects grouped under a fixed path
+- Do not commit `.env.local`
 
 ## Workflow
 

@@ -27,7 +27,7 @@ directory is not restricted.
 # 1) Create `.env.local` in this skill directory
 (cd "<SKILL_BASE_DIR>" && { test -f .env.local || touch .env.local; })
 
-# 2) Edit `<SKILL_BASE_DIR>/.env.local` and set at least one provider key (see "Supported Environment Variables").
+# 2) Edit `<SKILL_BASE_DIR>/.env.local` and set at least one provider key (see "Configuration Templates" and "Supported Environment Variables").
 # Example (OpenAI):
 #   OPENAI_API_KEY=...
 
@@ -96,6 +96,67 @@ Notes:
 - `~/.genai-calling/.env` is user-level config and should hold only values you want shared across projects.
 - Provider credentials should use the shorter provider-specific variable names such as `OPENAI_API_KEY`.
 
+## Configuration Templates
+
+Project-local `.env.local` example:
+
+```bash
+# Copy only what you need. Do not commit `.env.local`.
+
+# --------------------
+# Common
+# --------------------
+GENAI_CALLING_TIMEOUT_MS=120000
+GENAI_CALLING_URL_DOWNLOAD_MAX_BYTES=134217728
+# GENAI_CALLING_ALLOW_PRIVATE_URLS=1
+# GENAI_CALLING_TRANSPORT=
+
+# --------------------
+# Providers
+# --------------------
+OPENAI_API_KEY=
+GOOGLE_API_KEY=
+ANTHROPIC_API_KEY=
+
+ALIYUN_API_KEY=
+ALIYUN_OAI_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+
+VOLCENGINE_API_KEY=
+VOLCENGINE_OAI_BASE_URL=https://ark.cn-beijing.volces.com/api/v3
+
+TUZI_BASE_URL=https://api.tu-zi.com
+# TUZI_OAI_BASE_URL=https://api.tu-zi.com/v1
+# TUZI_GOOGLE_BASE_URL=https://api.tu-zi.com
+# TUZI_ANTHROPIC_BASE_URL=https://api.tu-zi.com
+TUZI_WEB_API_KEY=
+TUZI_OPENAI_API_KEY=
+TUZI_GOOGLE_API_KEY=
+TUZI_ANTHROPIC_API_KEY=
+
+# --------------------
+# MCP Server
+# --------------------
+GENAI_CALLING_MCP_HOST=127.0.0.1
+GENAI_CALLING_MCP_PORT=6001
+GENAI_CALLING_MCP_PUBLIC_BASE_URL=
+# GENAI_CALLING_MCP_BEARER_TOKEN=
+# GENAI_CALLING_MCP_TOKEN_RULES=token1: [openai google]; token2: [openai:gpt-4o-mini]
+```
+
+User-wide `~/.genai-calling/.env` example:
+
+```bash
+OPENAI_API_KEY=
+GOOGLE_API_KEY=
+ANTHROPIC_API_KEY=
+```
+
+Recommended usage:
+
+- Put shared provider credentials in `~/.genai-calling/.env`
+- Put project-specific overrides and MCP settings in `<SKILL_BASE_DIR>/.env.local`
+- Keep only the providers and options you actually use
+
 ## Supported Environment Variables
 
 ### Common runtime
@@ -136,6 +197,12 @@ Notes:
 - `GENAI_CALLING_MCP_PUBLIC_BASE_URL`
 - `GENAI_CALLING_MCP_BEARER_TOKEN`
 - `GENAI_CALLING_MCP_TOKEN_RULES`
+
+Quick guidance:
+
+- Most users only need one provider key plus `GENAI_CALLING_TIMEOUT_MS`
+- Only set `GENAI_CALLING_ALLOW_PRIVATE_URLS` if you explicitly want to bypass private URL protection
+- Only set MCP variables when you run `genai-mcp-server`
 
 ## Model Format
 
